@@ -1,5 +1,6 @@
 #include "gram_db.h"
 #include <boost/algorithm/string.hpp>
+#include <cmath>
 #include <darts.h>
 #include <rime/resource.h>
 #include <rime/dict/mapped_file.h>
