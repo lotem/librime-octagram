@@ -108,7 +108,6 @@ int GramDb::Lookup(const string& context,
   size_t node_pos = 0;
   size_t key_pos = 0;
   trie_->traverse(context.c_str(), node_pos, key_pos);
-  // TODO: cache the node_pos of context to improve performance
   if (key_pos == context.length()) {
     return trie_->commonPrefixSearch(
         word.c_str(), results, kMaxResults, 0, node_pos);
