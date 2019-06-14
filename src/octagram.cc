@@ -99,10 +99,10 @@ double Octagram::Query(const string& context,
                        const string& word,
                        bool is_rear) {
   if (!db_ || context.empty()) {
-    return 0;
+    return config_->non_collocation_penalty;
   }
-  GramDb::Match matches[GramDb::kMaxResults];
   double result = config_->non_collocation_penalty;
+  GramDb::Match matches[GramDb::kMaxResults];
   int context_len = 0;
   string context_query = grammar::encode(
       last_n_unicode(context,
