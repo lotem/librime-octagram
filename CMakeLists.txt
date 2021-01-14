@@ -13,6 +13,6 @@ endif()
 set(plugin_name rime-octagram PARENT_SCOPE)
 set(plugin_objs $<TARGET_OBJECTS:rime-octagram-objs> PARENT_SCOPE)
 set(plugin_deps ${rime_library} PARENT_SCOPE)
-set(plugin_modules "grammar" PARENT_SCOPE)
+set(plugin_modules "octagram" PARENT_SCOPE)
 
 add_subdirectory(tools)
