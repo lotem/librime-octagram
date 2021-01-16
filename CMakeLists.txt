@@ -1,5 +1,5 @@
 project(rime-octagram)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 aux_source_directory(src octagram_src)
 
