@@ -5,10 +5,10 @@
 namespace rime {
 namespace grammar {
 
-string encode(const char* p) {
-  char encoded_str[32];
+string encode(const char* begin, const char* end) {
+  char encoded_str[kMaxEncodedUnicode * 4];
   char* e = encoded_str;
-  while (*p) {
+  for (auto p = begin; p < end; ) {
     uint32_t u = utf8::unchecked::next(p);
     if (u < 0x80) {
       if (u == 0) {
