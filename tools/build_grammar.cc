@@ -28,10 +28,10 @@ int main(int argc, char* argv[]) {
 
   GramDb db(language + kGramDbType.suffix);
   LOG(INFO) << "creating " << db.file_name();
-  if (!db.Build(data)) {
+  if (!db.Build(data) || !db.Save()) {
     LOG(ERROR) << "failed to build " << db.file_name();
+    return 1;
   }
-  db.Close();
   LOG(INFO) << "created: " << db.file_name();
   return 0;
 }
