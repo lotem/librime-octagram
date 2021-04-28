@@ -152,7 +152,10 @@ double Octagram::Query(const string& context,
     }
   }
   if (is_rear) {
-    if (db_->Lookup(word_query, "$", matches) > 0 &&
+    int word_len = utf8::unchecked::distance(word.c_str(),
+                                             word.c_str() + word.length());
+    if (word_query_len == word_len &&
+        db_->Lookup(word_query, "$", matches) > 0 &&
         update_result(result,
                       scale_value(matches[0].value) + config_->rear_penalty)) {
       DLOG(INFO) << "update: " << word << "$ / " << result;
