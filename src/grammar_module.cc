@@ -14,7 +14,7 @@ static void rime_grammar_initialize() {
 
   LOG(INFO) << "registering components from module 'grammar'.";
   Registry& r = Registry::instance();
-  r.Register("grammar", new Component<Octagram>);
+  r.Register("grammar", new OctagramComponent);
 }
 
 static void rime_grammar_finalize() {}

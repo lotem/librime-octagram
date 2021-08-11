@@ -21,9 +21,9 @@ struct GrammarConfig {
 const ResourceType kGramDbType = {"gram_db", "", ".gram"};
 const string kGrammarDefaultLanguage = "zh-hant";
 
-Octagram::Octagram(Config* config) {
+Octagram::Octagram(Config* config, OctagramComponent* component)
+    : config_(std::make_unique<GrammarConfig>()) {
   string language;
-  config_.reset(new GrammarConfig);
   if (config) {
     if (config->GetString("grammar/language", &language)) {
       LOG(INFO) << "use grammar: " << language;
@@ -31,26 +31,21 @@ Octagram::Octagram(Config* config) {
       return;
     }
     config->GetInt("grammar/collocation_max_length",
-                   &config_->collocation_max_length);
+                  &config_->collocation_max_length);
     config->GetInt("grammar/collocation_min_length",
-                   &config_->collocation_min_length);
+                  &config_->collocation_min_length);
     config->GetDouble("grammar/collocation_penalty",
-                      &config_->collocation_penalty);
+                     &config_->collocation_penalty);
     config->GetDouble("grammar/non_collocation_penalty",
-                      &config_->non_collocation_penalty);
+                     &config_->non_collocation_penalty);
     config->GetDouble("grammar/weak_collocation_penalty",
-                      &config_->weak_collocation_penalty);
+                     &config_->weak_collocation_penalty);
     config->GetDouble("grammar/rear_penalty",
-                      &config_->rear_penalty);
+                     &config_->rear_penalty);
   }
-  the<ResourceResolver> resolver(
-      Service::instance().CreateResourceResolver(kGramDbType));
-  the<GramDb> db(new GramDb(resolver->ResolvePath(language).string()));
-  if (!db->Load()) {
-    LOG(ERROR) << "failed to load grammar database: " << language;
-    return;
+  if (!language.empty()) {
+    db_ = component->GetDb(language);
   }
-  db_ = std::move(db);
 }
 
 Octagram::~Octagram() {}
@@ -164,6 +159,30 @@ double Octagram::Query(const string& context,
   DLOG(INFO) << "context = " << context << ", word = " << word
              << " / " << result;
   return result;
+}
+
+OctagramComponent::OctagramComponent() {}
+
+OctagramComponent::~OctagramComponent() {}
+
+Octagram* OctagramComponent::Create(Config* config) {
+  return new Octagram(config, this);
+}
+
+GramDb* OctagramComponent::GetDb(const string& language) {
+  auto& loaded = db_by_language_[language];
+  if (!loaded) {
+    the<ResourceResolver> resolver(
+        Service::instance().CreateResourceResolver(kGramDbType));
+    the<GramDb> db =
+        std::make_unique<GramDb>(resolver->ResolvePath(language).string());
+    if (!db->Load()) {
+      LOG(ERROR) << "failed to load grammar database: " << language;
+      return nullptr;
+    }
+    loaded = std::move(db);
+  }
+  return loaded.get();
 }
 
 }  // namespace rime

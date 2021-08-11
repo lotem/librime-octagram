@@ -14,18 +14,32 @@ extern const string kGrammarDefaultLanguage;
 class Config;
 class GramDb;
 struct GrammarConfig;
+class OctagramComponent;
 
 class Octagram : public Grammar {
  public:
-  explicit Octagram(Config* config);
+  Octagram(Config* config, OctagramComponent* component);
   virtual ~Octagram();
   double Query(const string& context,
                const string& word,
                bool is_rear) override;
 
  private:
-  the<GramDb> db_;
   the<GrammarConfig> config_;
+  GramDb* db_ = nullptr;
+};
+
+class OctagramComponent : public Grammar::Component {
+ public:
+  OctagramComponent();
+  virtual ~OctagramComponent();
+
+  Octagram* Create(Config* config) override;
+
+  GramDb* GetDb(const string& language);
+
+ private:
+  map<string, the<GramDb>> db_by_language_;
 };
 
 }  // namespace rime
