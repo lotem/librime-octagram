@@ -65,7 +65,7 @@ bool GramDb::Build(const vector<pair<string, double>>& data) {
   values.reserve(data_size);
   for (const auto& kv : data) {
     keys.push_back(kv.first.c_str());
-    values.push_back(std::max(0, int(log(kv.second) * kValueScale)));
+    values.push_back((std::max)(0, int(log(kv.second) * kValueScale)));
   }
   if (0 != trie_->build(int(data_size), &keys[0], NULL, &values[0])) {
     LOG(ERROR) << "Error building double-array trie.";
