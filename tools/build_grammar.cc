@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
   }
   std::sort(data.begin(), data.end());
 
-  GramDb db(language + kGramDbType.suffix);
+  GramDb db(path{language + kGramDbType.suffix});
   LOG(INFO) << "creating " << db.file_path();
   if (!db.Build(data) || !db.Save()) {
     LOG(ERROR) << "failed to build " << db.file_path();
