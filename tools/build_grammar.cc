@@ -27,11 +27,11 @@ int main(int argc, char* argv[]) {
   std::sort(data.begin(), data.end());
 
   GramDb db(language + kGramDbType.suffix);
-  LOG(INFO) << "creating " << db.file_name();
+  LOG(INFO) << "creating " << db.file_path();
   if (!db.Build(data) || !db.Save()) {
-    LOG(ERROR) << "failed to build " << db.file_name();
+    LOG(ERROR) << "failed to build " << db.file_path();
     return 1;
   }
-  LOG(INFO) << "created: " << db.file_name();
+  LOG(INFO) << "created: " << db.file_path();
   return 0;
 }
