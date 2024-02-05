@@ -11,13 +11,13 @@ const string kGrammarFormat = "Rime::Grammar/1.0";
 const string kGrammarFormatPrefix = "Rime::Grammar/";
 
 bool GramDb::Load() {
-  LOG(INFO) << "loading gram db: " << file_name();
+  LOG(INFO) << "loading gram db: " << file_path();
 
   if (IsOpen())
     Close();
 
   if (!OpenReadOnly()) {
-    LOG(ERROR) << "error opening gram db '" << file_name() << "'.";
+    LOG(ERROR) << "error opening gram db '" << file_path() << "'.";
     return false;
   }
 
@@ -48,7 +48,7 @@ bool GramDb::Load() {
 }
 
 bool GramDb::Save() {
-  LOG(INFO) << "saving gram db: " << file_name();
+  LOG(INFO) << "saving gram db: " << file_path();
   if (!trie_->total_size()) {
     LOG(ERROR) << "the trie has not been constructed!";
     return false;
@@ -76,13 +76,13 @@ bool GramDb::Build(const vector<pair<string, double>>& data) {
   size_t image_size = trie_->total_size();
   const size_t kReservedSize = 1024;
   if (!Create(image_size + kReservedSize)) {
-    LOG(ERROR) << "Error creating gram db file '" << file_name() << "'.";
+    LOG(ERROR) << "Error creating gram db file '" << file_path() << "'.";
     return false;
   }
   // creating metadata
   auto metadata = Allocate<grammar::Metadata>();
   if (!metadata) {
-    LOG(ERROR) << "Error creating metadata in file '" << file_name() << "'.";
+    LOG(ERROR) << "Error creating metadata in file '" << file_path() << "'.";
     return false;
   }
   metadata_ = metadata;

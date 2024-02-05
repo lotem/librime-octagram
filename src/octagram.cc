@@ -175,7 +175,7 @@ GramDb* OctagramComponent::GetDb(const string& language) {
     the<ResourceResolver> resolver(
         Service::instance().CreateResourceResolver(kGramDbType));
     the<GramDb> db =
-        std::make_unique<GramDb>(resolver->ResolvePath(language).string());
+        std::make_unique<GramDb>(resolver->ResolvePath(language));
     if (!db->Load()) {
       LOG(ERROR) << "failed to load grammar database: " << language;
       return nullptr;

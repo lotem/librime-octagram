@@ -25,8 +25,8 @@ class GramDb : public MappedFile {
   static constexpr int kMaxResults = 8;
   static constexpr double kValueScale = 10000;
 
-  GramDb(const string& file_name)
-      : MappedFile(file_name),
+  GramDb(const path& file_path)
+      : MappedFile(file_path),
         trie_(new Darts::DoubleArray) {}
 
   bool Load();
