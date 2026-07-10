@@ -35,6 +35,7 @@ string encode(const char* begin, const char* end) {
       while (bytes_to_encode > 0) {
         --bytes_to_encode;
         *e++ = char(((u >> 25) & 0x7F) | 0x80);
+        u <<= 7;
       }
     }
   }
