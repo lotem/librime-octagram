@@ -1,8 +1,3 @@
-//
-// Copyright RIME Developers
-// Distributed under GPLv3
-//
-
 #include "octagram.h"
 #include <rime/common.h>
 #include <rime/registry.h>
